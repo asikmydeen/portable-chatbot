@@ -2,6 +2,12 @@
 
 A feature-rich, standalone AI chatbot that can be integrated into any web application with a single script tag. This optimized version maintains full functionality while reducing file size by 12.8%.
 
+## 🎭 Live Demo
+
+**[Try the live demo on GitHub Pages →](https://asikmydeen.github.io/portable-chatbot/)**
+
+The demo runs entirely in your browser with a mock API - no server setup required! It showcases all features including drag & drop, file uploads, markdown rendering, and theme switching.
+
 ## 🚀 Quick Start
 
 ### Method 1: Auto-initialization with Data Attributes
