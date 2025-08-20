@@ -53,22 +53,13 @@
     const originalFetch = window.fetch;
     
     window.fetch = async function(url, options = {}) {
-        // Log ALL fetch requests for debugging
-        console.log('🔍 Fetch request detected:', {
-            url: url,
-            type: typeof url,
-            options: options
-        });
-        
         // More robust URL matching for demo API calls
         const isApiCall = (typeof url === 'string' && url.includes('/api/chat')) || 
                          (url instanceof URL && url.pathname.includes('/api/chat')) ||
                          (typeof url === 'string' && url.endsWith('/api/chat'));
         
-        console.log('🎯 Is API call?', isApiCall, 'for URL:', url);
-        
         if (isApiCall) {
-            console.log('🎭 INTERCEPTING API call for demo:', url, options);
+            console.log('🎭 INTERCEPTING API call for demo:', url);
             
             await delay(300 + Math.random() * 500); // Simulate shorter network delay
             
@@ -126,7 +117,18 @@
                             const timer = setInterval(() => {
                                 if (i < chunks.length) {
                                     const content = i === 0 ? chunks[i] : ' ' + chunks[i];
-                                    const chunk = `data: {"choices":[{"delta":{"content":"${content.replace(/"/g, '\\"')}"}}]}\n\n`;
+                                    
+                                    // Use JSON.stringify to safely escape the content
+                                    const chunkData = {
+                                        choices: [{
+                                            delta: {
+                                                content: content
+                                            }
+                                        }]
+                                    };
+                                    
+                                    const chunk = `data: ${JSON.stringify(chunkData)}\n\n`;
+                                    console.log('📤 Sending chunk:', chunk);
                                     controller.enqueue(new TextEncoder().encode(chunk));
                                     i++;
                                 } else {
@@ -172,7 +174,6 @@
         }
         
         // For all other requests, use original fetch
-        console.log('🌐 Passing through to original fetch:', url);
         return originalFetch.call(this, url, options);
     };
     
