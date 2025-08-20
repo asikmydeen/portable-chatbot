@@ -8,26 +8,26 @@
 <body>
     <h1>Plain HTML Example</h1>
     <p>The chatbot appears in the bottom right corner.</p>
-    <p><em>🎭 Demo mode: Uses mock API responses, no backend required!</em></p>
+    <p><em>🌐 CDN Demo: Loaded from jsDelivr CDN with mock API responses!</em></p>
 
-    <!-- Load mock API for demo -->
-    <script src="../mock-api.js"></script>
+    <!-- Load mock API from CDN -->
+    <script src="https://cdn.jsdelivr.net/gh/asikmydeen/portable-chatbot@latest/dist/mock-api.js"></script>
     
     <!-- Method 1: Include the script and auto-initialize with data attributes -->
-    <script src="../portable-chatbot.js"
+    <script src="https://cdn.jsdelivr.net/gh/asikmydeen/portable-chatbot@latest/dist/portable-chatbot.js"
             data-chatbot-endpoint="/api/chat"
-            data-chatbot-heading="Customer Support (Demo)"
+            data-chatbot-heading="Customer Support (CDN Demo)"
             data-chatbot-theme="light"></script>
 
     <!-- Method 2: Include script and initialize manually -->
     <!--
-    <script src="../mock-api.js"></script>
-    <script src="../portable-chatbot.js"></script>
+    <script src="https://cdn.jsdelivr.net/gh/asikmydeen/portable-chatbot@latest/dist/mock-api.js"></script>
+    <script src="https://cdn.jsdelivr.net/gh/asikmydeen/portable-chatbot@latest/dist/portable-chatbot.js"></script>
     <script>
         // Initialize manually with more control
         const chatbot = createChatbot({
             endpoint: '/api/chat',
-            heading: 'AI Assistant (Demo)',
+            heading: 'AI Assistant (CDN Demo)',
             theme: 'light'
         });
     </script>
