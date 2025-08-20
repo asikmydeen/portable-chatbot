@@ -1,0 +1,42 @@
+{
+  "name": "portable-chatbot",
+  "version": "1.0.0",
+  "description": "Feature-rich, standalone AI chatbot that can be integrated into any web application",
+  "main": "portable-chatbot.js",
+  "scripts": {
+    "start": "node backend-example.js",
+    "dev": "node backend-example.js",
+    "test": "node backend-example.js"
+  },
+  "keywords": [
+    "chatbot",
+    "ai",
+    "chat",
+    "assistant",
+    "javascript",
+    "vanilla-js",
+    "portable",
+    "drag-drop",
+    "markdown",
+    "file-upload",
+    "responsive"
+  ],
+  "author": "Professional AI Chatbot",
+  "license": "MIT",
+  "dependencies": {
+    "cors": "^2.8.5",
+    "express": "^4.18.2",
+    "multer": "^1.4.5-lts.1"
+  },
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/your-username/portable-chatbot.js.git"
+  },
+  "bugs": {
+    "url": "https://github.com/your-username/portable-chatbot.js/issues"
+  },
+  "homepage": "https://github.com/your-username/portable-chatbot.js#readme",
+  "engines": {
+    "node": ">=14.0.0"
+  }
+}

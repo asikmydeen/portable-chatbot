@@ -1,0 +1,306 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>React Integration Example</title>
+    <style>
+        body {
+            font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
+            padding: 40px;
+            background: #f9fafb;
+            color: #1f2937;
+            line-height: 1.6;
+            margin: 0;
+        }
+
+        .container {
+            max-width: 900px;
+            margin: 0 auto;
+            background: white;
+            padding: 40px;
+            border-radius: 12px;
+            box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+        }
+
+        h1 {
+            color: #3b82f6;
+            margin-bottom: 30px;
+            text-align: center;
+        }
+
+        .code-example {
+            background: #1e293b;
+            color: #e2e8f0;
+            padding: 20px;
+            border-radius: 8px;
+            margin: 20px 0;
+            font-family: 'Monaco', 'Menlo', monospace;
+            font-size: 14px;
+            overflow-x: auto;
+        }
+
+        .info-box {
+            background: #eff6ff;
+            border: 1px solid #3b82f6;
+            border-radius: 8px;
+            padding: 20px;
+            margin-bottom: 30px;
+        }
+
+        .info-box h3 {
+            color: #1e40af;
+            margin: 0 0 10px 0;
+        }
+
+        .demo-section {
+            margin: 30px 0;
+            padding: 20px;
+            border: 1px solid #e5e7eb;
+            border-radius: 8px;
+            background: #f9fafb;
+        }
+
+        .demo-controls {
+            margin: 20px 0;
+        }
+
+        button {
+            background: #3b82f6;
+            color: white;
+            border: none;
+            padding: 10px 20px;
+            border-radius: 6px;
+            cursor: pointer;
+            margin: 5px;
+            transition: background 0.2s;
+        }
+
+        button:hover {
+            background: #2563eb;
+        }
+
+        .status {
+            padding: 10px 15px;
+            border-radius: 6px;
+            margin: 10px 0;
+            font-weight: 500;
+        }
+
+        .status.connected {
+            background: #d1fae5;
+            color: #065f46;
+        }
+
+        .status.disconnected {
+            background: #fee2e2;
+            color: #991b1b;
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <h1>⚛️ React Integration Example</h1>
+        
+        <div class="info-box">
+            <h3>📖 React Integration</h3>
+            <p>This example shows how to integrate the portable chatbot with React applications. The chatbot lifecycle is properly managed within React components.</p>
+        </div>
+
+        <h3>📋 Implementation Code</h3>
+        
+        <div class="code-example">// React Hook for Chatbot Integration
+import { useEffect, useRef, useState } from 'react';
+
+function useChatbot(options) {
+    const chatbotRef = useRef(null);
+    const [isConnected, setIsConnected] = useState(false);
+
+    useEffect(() => {
+        // Initialize chatbot when component mounts
+        if (window.createChatbot) {
+            chatbotRef.current = window.createChatbot({
+                endpoint: options.endpoint || '/api/chat',
+                heading: options.heading || 'AI Assistant',
+                theme: options.theme || 'light'
+            });
+            setIsConnected(true);
+        }
+
+        // Cleanup when component unmounts
+        return () => {
+            if (chatbotRef.current) {
+                chatbotRef.current.destroy();
+                chatbotRef.current = null;
+                setIsConnected(false);
+            }
+        };
+    }, [options.endpoint, options.heading, options.theme]);
+
+    return {
+        chatbot: chatbotRef.current,
+        isConnected,
+        open: () => chatbotRef.current?.open(),
+        close: () => chatbotRef.current?.close(),
+        toggle: () => chatbotRef.current?.toggle(),
+        destroy: () => {
+            if (chatbotRef.current) {
+                chatbotRef.current.destroy();
+                chatbotRef.current = null;
+                setIsConnected(false);
+            }
+        }
+    };
+}
+
+// React Component Example
+function App() {
+    const chatbot = useChatbot({
+        endpoint: 'http://localhost:3000/api/chat',
+        heading: 'React Assistant',
+        theme: 'light'
+    });
+
+    const handleSendMessage = () => {
+        if (chatbot.chatbot) {
+            chatbot.chatbot.inputEl.value = 'Hello from React!';
+            chatbot.chatbot.sendMessage();
+        }
+    };
+
+    return (
+        &lt;div className="app"&gt;
+            &lt;h1&gt;My React App&lt;/h1&gt;
+            &lt;div className="chatbot-controls"&gt;
+                &lt;button onClick={chatbot.open}&gt;Open Chat&lt;/button&gt;
+                &lt;button onClick={chatbot.close}&gt;Close Chat&lt;/button&gt;
+                &lt;button onClick={handleSendMessage}&gt;Send Message&lt;/button&gt;
+                &lt;div className={`status ${chatbot.isConnected ? 'connected' : 'disconnected'}`}&gt;
+                    Status: {chatbot.isConnected ? 'Connected' : 'Disconnected'}
+                &lt;/div&gt;
+            &lt;/div&gt;
+        &lt;/div&gt;
+    );
+}</div>
+
+        <div class="demo-section">
+            <h3>🎮 Live Demo Simulation</h3>
+            <p>This simulates how the React integration would work:</p>
+            
+            <div id="status" class="status disconnected">
+                Status: Disconnected
+            </div>
+
+            <div class="demo-controls">
+                <button onclick="initializeChatbot()">Initialize Chatbot</button>
+                <button onclick="openChatbot()" id="openBtn" disabled>Open Chat</button>
+                <button onclick="closeChatbot()" id="closeBtn" disabled>Close Chat</button>
+                <button onclick="sendTestMessage()" id="msgBtn" disabled>Send Test Message</button>
+                <button onclick="destroyChatbot()" id="destroyBtn" disabled>Destroy Chatbot</button>
+            </div>
+
+            <p style="color: #6b7280; font-size: 14px;">
+                Note: Make sure your backend server is running on <code>http://localhost:3000/api/chat</code>
+            </p>
+        </div>
+
+        <h3>🔧 Key Features</h3>
+        <ul>
+            <li><strong>Lifecycle Management</strong>: Proper initialization and cleanup</li>
+            <li><strong>State Tracking</strong>: Track connection status</li>
+            <li><strong>Method Access</strong>: Direct access to chatbot methods</li>
+            <li><strong>React Hooks</strong>: Custom hook for easy reuse</li>
+            <li><strong>Error Handling</strong>: Graceful fallbacks</li>
+        </ul>
+
+        <h3>📦 Installation in React Project</h3>
+        <div class="code-example">// 1. Add the script to your public/index.html
+&lt;script src="/portable-chatbot.js"&gt;&lt;/script&gt;
+
+// 2. Or import it in your component file
+// (Copy portable-chatbot.js to your public folder)
+
+// 3. Use the custom hook in your components
+import { useChatbot } from './hooks/useChatbot';
+
+function MyComponent() {
+    const chatbot = useChatbot({
+        endpoint: '/api/chat',
+        heading: 'Support Bot'
+    });
+
+    return (
+        &lt;div&gt;
+            {chatbot.isConnected && (
+                &lt;button onClick={chatbot.open}&gt;
+                    Open Support Chat
+                &lt;/button&gt;
+            )}
+        &lt;/div&gt;
+    );
+}</div>
+    </div>
+
+    <!-- Include the chatbot script -->
+    <script src="../portable-chatbot.js"></script>
+
+    <script>
+        let simulatedChatbot = null;
+
+        function updateStatus(connected) {
+            const statusEl = document.getElementById('status');
+            statusEl.className = `status ${connected ? 'connected' : 'disconnected'}`;
+            statusEl.textContent = `Status: ${connected ? 'Connected' : 'Disconnected'}`;
+
+            // Update button states
+            document.getElementById('openBtn').disabled = !connected;
+            document.getElementById('closeBtn').disabled = !connected;
+            document.getElementById('msgBtn').disabled = !connected;
+            document.getElementById('destroyBtn').disabled = !connected;
+        }
+
+        function initializeChatbot() {
+            if (window.createChatbot) {
+                simulatedChatbot = window.createChatbot({
+                    endpoint: 'http://localhost:3000/api/chat',
+                    heading: 'React Assistant',
+                    theme: 'light'
+                });
+                updateStatus(true);
+            } else {
+                alert('Chatbot script not loaded!');
+            }
+        }
+
+        function openChatbot() {
+            if (simulatedChatbot) {
+                simulatedChatbot.open();
+            }
+        }
+
+        function closeChatbot() {
+            if (simulatedChatbot) {
+                simulatedChatbot.close();
+            }
+        }
+
+        function sendTestMessage() {
+            if (simulatedChatbot) {
+                simulatedChatbot.inputEl.value = 'Hello from React integration demo!';
+                simulatedChatbot.sendMessage();
+            }
+        }
+
+        function destroyChatbot() {
+            if (simulatedChatbot) {
+                simulatedChatbot.destroy();
+                simulatedChatbot = null;
+                updateStatus(false);
+            }
+        }
+
+        // Initialize on load
+        updateStatus(false);
+    </script>
+</body>
+</html>
