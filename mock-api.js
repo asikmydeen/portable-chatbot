@@ -118,13 +118,9 @@
                                 if (i < chunks.length) {
                                     const content = i === 0 ? chunks[i] : ' ' + chunks[i];
                                     
-                                    // Use JSON.stringify to safely escape the content
+                                    // Use the correct format that the chatbot expects
                                     const chunkData = {
-                                        choices: [{
-                                            delta: {
-                                                content: content
-                                            }
-                                        }]
+                                        content: content
                                     };
                                     
                                     const chunk = `data: ${JSON.stringify(chunkData)}\n\n`;
@@ -132,7 +128,8 @@
                                     controller.enqueue(new TextEncoder().encode(chunk));
                                     i++;
                                 } else {
-                                    controller.enqueue(new TextEncoder().encode('data: [DONE]\n\n'));
+                                    // Send done signal
+                                    controller.enqueue(new TextEncoder().encode('data: {"done": true}\n\n'));
                                     controller.close();
                                     clearInterval(timer);
                                 }
@@ -150,16 +147,15 @@
                     });
                 }
                 
-                // Regular JSON response for non-streaming
-                return new Response(JSON.stringify({
-                    choices: [{
-                        message: {
-                            content: response
-                        }
-                    }]
-                }), {
+                // For non-streaming, send as SSE format anyway since that's what the chatbot expects
+                const streamData = `data: ${JSON.stringify({ content: response })}\n\ndata: ${JSON.stringify({ done: true })}\n\n`;
+                return new Response(streamData, {
                     status: 200,
-                    headers: { 'Content-Type': 'application/json' }
+                    headers: { 
+                        'Content-Type': 'text/event-stream',
+                        'Cache-Control': 'no-cache',
+                        'Connection': 'keep-alive'
+                    }
                 });
                 
             } catch (error) {
