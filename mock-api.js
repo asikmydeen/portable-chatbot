@@ -53,9 +53,22 @@
     const originalFetch = window.fetch;
     
     window.fetch = async function(url, options = {}) {
-        // Only intercept our demo API calls
-        if (typeof url === 'string' && url.includes('/api/chat')) {
-            console.log('🎭 Intercepting API call for demo:', url, options);
+        // Log ALL fetch requests for debugging
+        console.log('🔍 Fetch request detected:', {
+            url: url,
+            type: typeof url,
+            options: options
+        });
+        
+        // More robust URL matching for demo API calls
+        const isApiCall = (typeof url === 'string' && url.includes('/api/chat')) || 
+                         (url instanceof URL && url.pathname.includes('/api/chat')) ||
+                         (typeof url === 'string' && url.endsWith('/api/chat'));
+        
+        console.log('🎯 Is API call?', isApiCall, 'for URL:', url);
+        
+        if (isApiCall) {
+            console.log('🎭 INTERCEPTING API call for demo:', url, options);
             
             await delay(300 + Math.random() * 500); // Simulate shorter network delay
             
@@ -159,8 +172,13 @@
         }
         
         // For all other requests, use original fetch
+        console.log('🌐 Passing through to original fetch:', url);
         return originalFetch.call(this, url, options);
     };
+    
+    // Also try to intercept any fetch calls made with full URLs
+    const originalGlobalFetch = globalThis.fetch;
+    globalThis.fetch = window.fetch;
 
     console.log('🎭 Mock API loaded for GitHub Pages demo');
     
