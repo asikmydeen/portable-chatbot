@@ -55,9 +55,9 @@
     window.fetch = async function(url, options = {}) {
         // Only intercept our demo API calls
         if (typeof url === 'string' && url.includes('/api/chat')) {
-            console.log('🎭 Intercepting API call for demo:', url);
+            console.log('🎭 Intercepting API call for demo:', url, options);
             
-            await delay(500 + Math.random() * 1000); // Simulate network delay
+            await delay(300 + Math.random() * 500); // Simulate shorter network delay
             
             try {
                 const body = options.body;
@@ -88,9 +88,14 @@
                     });
                 }
                 
+                let data = {};
                 if (typeof body === 'string') {
-                    const data = JSON.parse(body);
-                    messages = data.messages || [];
+                    try {
+                        data = JSON.parse(body);
+                        messages = data.messages || [];
+                    } catch (e) {
+                        console.warn('Failed to parse request body:', e);
+                    }
                 }
                 
                 const lastMessage = messages[messages.length - 1];
@@ -98,7 +103,7 @@
                 const response = generateResponse(userMessage);
                 
                 // Simulate streaming response
-                if (options.body && JSON.parse(options.body).stream) {
+                if (data.stream) {
                     const chunks = response.split(' ');
                     let responseText = '';
                     
@@ -107,8 +112,8 @@
                             let i = 0;
                             const timer = setInterval(() => {
                                 if (i < chunks.length) {
-                                    responseText += (i > 0 ? ' ' : '') + chunks[i];
-                                    const chunk = `data: {"choices":[{"delta":{"content":"${i === 0 ? chunks[i] : ' ' + chunks[i]}"}}]}\n\n`;
+                                    const content = i === 0 ? chunks[i] : ' ' + chunks[i];
+                                    const chunk = `data: {"choices":[{"delta":{"content":"${content.replace(/"/g, '\\"')}"}}]}\n\n`;
                                     controller.enqueue(new TextEncoder().encode(chunk));
                                     i++;
                                 } else {
@@ -116,7 +121,7 @@
                                     controller.close();
                                     clearInterval(timer);
                                 }
-                            }, 100 + Math.random() * 200);
+                            }, 50 + Math.random() * 100);
                         }
                     });
                     
@@ -130,7 +135,7 @@
                     });
                 }
                 
-                // Regular JSON response
+                // Regular JSON response for non-streaming
                 return new Response(JSON.stringify({
                     choices: [{
                         message: {
@@ -159,22 +164,52 @@
 
     console.log('🎭 Mock API loaded for GitHub Pages demo');
     
+    // Expose a test function for debugging
+    window.testMockAPI = async function() {
+        try {
+            const response = await fetch('/api/chat', {
+                method: 'POST',
+                headers: { 'Content-Type': 'application/json' },
+                body: JSON.stringify({
+                    messages: [{ role: 'user', content: 'test' }],
+                    stream: true
+                })
+            });
+            console.log('Test response:', response);
+            return response;
+        } catch (error) {
+            console.error('Test failed:', error);
+        }
+    };
+    
     // Add demo indicator
-    const indicator = document.createElement('div');
-    indicator.innerHTML = '🎭 Demo Mode Active';
-    indicator.style.cssText = `
-        position: fixed;
-        top: 10px;
-        left: 10px;
-        background: #10b981;
-        color: white;
-        padding: 8px 12px;
-        border-radius: 20px;
-        font-size: 12px;
-        font-weight: 600;
-        z-index: 10000;
-        box-shadow: 0 2px 8px rgba(0,0,0,0.1);
-        font-family: -apple-system, BlinkMacSystemFont, sans-serif;
-    `;
-    document.body.appendChild(indicator);
+    function addDemoIndicator() {
+        if (document.getElementById('demo-indicator')) return; // Prevent duplicates
+        
+        const indicator = document.createElement('div');
+        indicator.id = 'demo-indicator';
+        indicator.innerHTML = '🎭 Demo Mode Active';
+        indicator.style.cssText = `
+            position: fixed;
+            top: 10px;
+            left: 10px;
+            background: #10b981;
+            color: white;
+            padding: 8px 12px;
+            border-radius: 20px;
+            font-size: 12px;
+            font-weight: 600;
+            z-index: 10000;
+            box-shadow: 0 2px 8px rgba(0,0,0,0.1);
+            font-family: -apple-system, BlinkMacSystemFont, sans-serif;
+        `;
+        document.body.appendChild(indicator);
+    }
+    
+    // Add indicator when DOM is ready
+    if (document.readyState === 'loading') {
+        document.addEventListener('DOMContentLoaded', addDemoIndicator);
+    } else {
+        addDemoIndicator();
+    }
 })();
