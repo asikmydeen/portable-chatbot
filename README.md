@@ -10,7 +10,35 @@ The demo runs entirely in your browser with a mock API - no server setup require
 
 ## 🚀 Quick Start
 
-### Method 1: Auto-initialization with Data Attributes
+### CDN Installation (Recommended)
+
+#### jsDelivr CDN (Latest)
+```html
+<script src="https://cdn.jsdelivr.net/gh/asikmydeen/portable-chatbot@latest/dist/portable-chatbot.js"
+        data-chatbot-endpoint="https://your-api.com/chat"
+        data-chatbot-heading="AI Assistant"
+        data-chatbot-theme="light"></script>
+```
+
+#### jsDelivr CDN (Version Pinned)
+```html
+<script src="https://cdn.jsdelivr.net/gh/asikmydeen/portable-chatbot@v1.0.0/dist/v1.0.0/portable-chatbot.js"
+        data-chatbot-endpoint="https://your-api.com/chat"
+        data-chatbot-heading="AI Assistant"
+        data-chatbot-theme="light"></script>
+```
+
+#### GitHub Pages CDN
+```html
+<script src="https://asikmydeen.github.io/portable-chatbot/dist/portable-chatbot.js"
+        data-chatbot-endpoint="https://your-api.com/chat"
+        data-chatbot-heading="AI Assistant"
+        data-chatbot-theme="light"></script>
+```
+
+### Local Installation
+
+#### Method 1: Auto-initialization with Data Attributes
 
 ```html
 <script src="portable-chatbot.js"
@@ -19,7 +47,7 @@ The demo runs entirely in your browser with a mock API - no server setup require
         data-chatbot-theme="light"></script>
 ```
 
-### Method 2: Manual Initialization
+#### Method 2: Manual Initialization
 
 ```html
 <script src="portable-chatbot.js"></script>
@@ -242,6 +270,34 @@ On screens smaller than 480px:
 - **Original**: 35.9 KB
 - **Optimized**: 31.3 KB (12.8% reduction)
 - **Gzipped**: ~8.5 KB
+
+## 🌐 CDN Information
+
+### Available CDNs
+
+| Provider | URL Format | Caching | Auto-Updates |
+|----------|------------|---------|--------------|
+| **jsDelivr** | `cdn.jsdelivr.net/gh/asikmydeen/portable-chatbot@{version}/dist/` | 7 days | ✅ |
+| **GitHub Pages** | `asikmydeen.github.io/portable-chatbot/dist/` | Browser cache | ✅ |
+
+### Version Options
+
+- **Latest**: `@latest` - Always gets the most recent version
+- **Pinned**: `@v1.0.0` - Locks to specific version for production
+- **Branch**: `@main` - Uses the main branch (development)
+
+### CDN Examples
+
+```html
+<!-- Production: Version pinned for stability -->
+<script src="https://cdn.jsdelivr.net/gh/asikmydeen/portable-chatbot@v1.0.0/dist/v1.0.0/portable-chatbot.js"></script>
+
+<!-- Development: Always latest -->
+<script src="https://cdn.jsdelivr.net/gh/asikmydeen/portable-chatbot@latest/dist/portable-chatbot.js"></script>
+
+<!-- GitHub Pages: Direct from repository -->
+<script src="https://asikmydeen.github.io/portable-chatbot/dist/portable-chatbot.js"></script>
+```
 
 ## 🧪 Testing
 

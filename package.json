@@ -30,12 +30,12 @@
   },
   "repository": {
     "type": "git",
-    "url": "https://github.com/your-username/portable-chatbot.js.git"
+    "url": "https://github.com/asikmydeen/portable-chatbot.git"
   },
   "bugs": {
-    "url": "https://github.com/your-username/portable-chatbot.js/issues"
+    "url": "https://github.com/asikmydeen/portable-chatbot/issues"
   },
-  "homepage": "https://github.com/your-username/portable-chatbot.js#readme",
+  "homepage": "https://asikmydeen.github.io/portable-chatbot",
   "engines": {
     "node": ">=14.0.0"
   }

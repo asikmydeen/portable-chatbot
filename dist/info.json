@@ -1,0 +1,30 @@
+{
+  "name": "portable-ai-chatbot",
+  "version": "1.0.0",
+  "description": "Feature-rich, standalone AI chatbot component",
+  "main": "portable-chatbot.js",
+  "size": {
+    "uncompressed": "31.3KB",
+    "gzipped": "~8.5KB"
+  },
+  "files": {
+    "latest": {
+      "js": "portable-chatbot.js",
+      "mock": "mock-api.js"
+    },
+    "v1.0.0": {
+      "js": "v1.0.0/portable-chatbot.js",
+      "minified": "v1.0.0/portable-chatbot.min.js",
+      "mock": "v1.0.0/mock-api.js"
+    }
+  },
+  "cdn": {
+    "jsdelivr": "https://cdn.jsdelivr.net/gh/asikmydeen/portable-chatbot@latest/dist/",
+    "github": "https://asikmydeen.github.io/portable-chatbot/dist/"
+  },
+  "usage": {
+    "cdn": "<script src=\"https://cdn.jsdelivr.net/gh/asikmydeen/portable-chatbot@latest/dist/portable-chatbot.js\"></script>",
+    "versioned": "<script src=\"https://cdn.jsdelivr.net/gh/asikmydeen/portable-chatbot@v1.0.0/dist/v1.0.0/portable-chatbot.js\"></script>",
+    "github_pages": "<script src=\"https://asikmydeen.github.io/portable-chatbot/dist/portable-chatbot.js\"></script>"
+  }
+}
